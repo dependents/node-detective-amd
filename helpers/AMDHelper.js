@@ -14,7 +14,9 @@ module.exports.getDefineType = function (node) {
 };
 
 // @returns {string[]|[]} A list of file dependencies or an empty list if there are no dependencies
-module.exports.getDependenciesFromType = function (node, type) {
+module.exports.getDependencies = function (node) {
+  var type = this.getDefineType(node);
+
   // Note: No need to handle nodeps since there won't
   // be any dependencies
   switch(type) {
@@ -44,19 +46,28 @@ module.exports.isDefine = function (node) {
 //////////////////
 
 function isNamedForm(node) {
-  return false;
+  var args = node['arguments'];
+
+  // TODO: Should we also make sure the second element is an array?
+  return args && args[0].type === 'Literal';
 }
 
 function isDependencyForm(node) {
-  return false;
+  var args = node['arguments'];
+
+  return args && args[0].type === 'ArrayExpression';
 }
 
 function isFactoryForm(node) {
-  return false;
+  var args = node['arguments'];
+
+  return args && args[0].type === 'FunctionExpression';
 }
 
 function isNoDependencyForm(node) {
-  return false;
+  var args = node['arguments'];
+
+  return args && args[0].type === 'ObjectExpression';
 }
 
 //////////////////
@@ -64,13 +75,11 @@ function isNoDependencyForm(node) {
 //////////////////
 
 function getNamedFormDeps(node) {
-  return [];
+  return getElementValues(node['arguments'][1]);
 }
 
-
 function getDependencyFormDeps(node) {
-  return [];
-
+  return getElementValues(node['arguments'][0]);
 }
 
 function getFactoryFormDeps(node) {
@@ -80,4 +89,13 @@ function getFactoryFormDeps(node) {
 
 }
 
+
+function getElementValues(nodeArguments) {
+  var elements = nodeArguments.elements || [];
+
+  return elements.map(function (el) {
+    // TODO: Maybe use escodegen to eval expressions
+    return el.value;
+  });
+}
 

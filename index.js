@@ -23,7 +23,9 @@ function getDependencies(src) {
 
     console.log(node);
 
-    deps = amdh.getDependenciesFromType(node, amdh.getDefineType(node));
+    deps = amdh.getDependencies(node);
+
+    console.log('Deps: ', deps);
 
     // Get the literal (or evaluated expression) dependencies
     // Push to a list of dependencies
