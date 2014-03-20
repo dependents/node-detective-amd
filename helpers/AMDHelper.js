@@ -66,7 +66,7 @@ function isDependencyForm(node) {
 // define(func(require))
 function isFactoryForm(node) {
   var args = node['arguments'],
-      firstParamNode = args ? args[0].params[0] : null;
+      firstParamNode = args.length && args[0].params ? args[0].params[0] : null;
 
   // Node should have a function whose first param is 'require'
   return args && args[0].type === 'FunctionExpression' &&
