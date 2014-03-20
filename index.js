@@ -21,11 +21,7 @@ function getDependencies(src) {
 
     if (! amdh.isDefine(node)) return;
 
-    console.log(node);
-
     deps = amdh.getDependencies(node);
-
-    console.log('Deps: ', deps);
 
     // Get the literal (or evaluated expression) dependencies
     // Push to a list of dependencies
