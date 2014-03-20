@@ -1,5 +1,12 @@
 var getDependencies = require('../');
 
-getDependencies('./amd/b.js', function (deps) {
-  if (deps) console.log(deps);
-});
+['./amd/a.js', './amd/b.js', './amd/c.js'].forEach(run);
+
+function run (filepath) {
+
+  getDependencies(filepath, function (deps) {
+    console.log(filepath);
+    console.log(deps);
+  });
+
+}
