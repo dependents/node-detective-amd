@@ -37,14 +37,14 @@ getDependencies('a.js', function (deps) {
 
 ### Notes
 
-Supports the 4 forms of AMD syntax:
+**Supports the 4 forms of AMD syntax:**
 
 * "named": `define('name', [deps], func)`
 * "dependency list": `define([deps], func)`
 * "factory": `define(func(require))`
 * "no dependencies": `define({})`
 
-Expression-based requires
+**Expression-based requires**
 
 If there's a require call that doesn't have a string literal but an expression,
 a string (escodegen-generated) representation will be returned.
