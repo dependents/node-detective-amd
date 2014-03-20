@@ -33,6 +33,14 @@ var getDependencies = require('node-detective-amd');
 getDependencies('a.js', function (deps) {
   console.log(deps); // prints ['./b', './c']
 });
+
+getDependencies('b.js', function (deps) {
+  console.log(deps); // prints []
+});
+
+getDependencies('c.js', function (deps) {
+  console.log(deps); // prints []
+});
 ```
 
 ### Notes
