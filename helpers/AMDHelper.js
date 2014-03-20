@@ -1,3 +1,6 @@
+var Walker = require('node-source-walk'),
+    escodegen = require('escodegen');
+
 // Returns the type of module syntax used if the node
 // adheres to one of the following syntaxes, or null if it's an unsupported form
 //    define('name', [deps], func)    'named'
@@ -45,6 +48,7 @@ module.exports.isDefine = function (node) {
 // Form Helpers
 //////////////////
 
+// define('name', [deps], func)
 function isNamedForm(node) {
   var args = node['arguments'];
 
@@ -52,18 +56,24 @@ function isNamedForm(node) {
   return args && args[0].type === 'Literal';
 }
 
+// define([deps], func)
 function isDependencyForm(node) {
   var args = node['arguments'];
 
   return args && args[0].type === 'ArrayExpression';
 }
 
+// define(func(require))
 function isFactoryForm(node) {
-  var args = node['arguments'];
+  var args = node['arguments'],
+      firstParamNode = args ? args[0].params[0] : null;
 
-  return args && args[0].type === 'FunctionExpression';
+  // Node should have a function whose first param is 'require'
+  return args && args[0].type === 'FunctionExpression' &&
+        firstParamNode && firstParamNode.type === 'Identifier' && firstParamNode.name === 'require';
 }
 
+// define({})
 function isNoDependencyForm(node) {
   var args = node['arguments'];
 
@@ -75,27 +85,59 @@ function isNoDependencyForm(node) {
 //////////////////
 
 function getNamedFormDeps(node) {
-  return getElementValues(node['arguments'][1]);
+  var args = node['arguments'] || [];
+
+  return getElementValues(args[1]);
 }
 
 function getDependencyFormDeps(node) {
-  return getElementValues(node['arguments'][0]);
+  var args = node['arguments'] || [];
+
+  return getElementValues(args[0]);
 }
 
 function getFactoryFormDeps(node) {
   // Use logic from node-detective to find require calls
-  // TODO: Use walker.traverse with a custom callback looking for require calls within this node
-  return [];
+  var walker = new Walker(),
+      dependencies = [];
 
+  walker.traverse(node, function (innerNode) {
+    // Look for require function calls
+    if (isRequire(innerNode)) {
+      // Store the name of the required entity
+      if (innerNode['arguments'].length) {
+        dependencies.push(getEvaluatedValue(innerNode['arguments'][0]));
+      }
+    }
+  });
+
+  return dependencies;
 }
 
+// Whether or not the node represents a require function call
+function isRequire(node) {
+  var c = node.callee;
 
+  return c &&
+        node.type  === 'CallExpression' &&
+        c.type     === 'Identifier' &&
+        c.name     === 'require';
+}
+
+// Returns the literal values from the passed array
 function getElementValues(nodeArguments) {
   var elements = nodeArguments.elements || [];
 
   return elements.map(function (el) {
     // TODO: Maybe use escodegen to eval expressions
-    return el.value;
+    return getEvaluatedValue(el);
   });
 }
 
+// For literal nodes, returns the value
+// For expression nodes, returns a string representation of the expression
+function getEvaluatedValue(node) {
+  if (node.type === 'Literal') return node.value;
+
+  return escodegen.generate(node);
+}
