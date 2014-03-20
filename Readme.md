@@ -30,15 +30,20 @@ Here's how you can grab the list of dependencies of a.js
 ```javascript
 var getDependencies = require('node-detective-amd');
 
-getDependencies('a.js', function (deps) {
+var srca = fs.readFileSync('a.js');
+var srcb = fs.readFileSync('b.js');
+var srcc = fs.readFileSync('c.js');
+
+// Pass in the source code as a string
+getDependencies(srca, function (deps) {
   console.log(deps); // prints ['./b', './c']
 });
 
-getDependencies('b.js', function (deps) {
+getDependencies(srcb, function (deps) {
   console.log(deps); // prints []
 });
 
-getDependencies('c.js', function (deps) {
+getDependencies(srcc, function (deps) {
   console.log(deps); // prints []
 });
 ```
