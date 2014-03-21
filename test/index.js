@@ -6,9 +6,6 @@ var getDependencies = require('../'),
 function run (filepath) {
   var src = fs.readFileSync(filepath);
 
-  getDependencies(src, function (deps) {
-    console.log(filepath);
-    console.log(deps);
-  });
-
+  console.log(filepath);
+  console.log(getDependencies(src));
 }

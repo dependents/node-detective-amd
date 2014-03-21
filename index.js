@@ -3,10 +3,10 @@ var Walker = require('node-source-walk'),
 
 // Assumes src is the source code for a javascript file
 // using any form of the AMD module syntax
-module.exports = function (src, cb) {
+module.exports = function (src) {
   if (! src) throw new Error('src not given');
 
-  cb(getDependencies(src));
+  return getDependencies(src);
 };
 
 function getDependencies(src) {

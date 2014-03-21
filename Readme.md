@@ -3,6 +3,8 @@ any of the AMD module syntaxes.
 
 *Inspired by substack/node-detective but built for AMD*
 
+`npm install detective-amd`
+
 ### Usage
 
 Let's say we have the following file definitions:
@@ -35,18 +37,9 @@ var srcb = fs.readFileSync('b.js');
 var srcc = fs.readFileSync('c.js');
 
 // Pass in the source code as a string
-getDependencies(srca, function (deps) {
-  console.log(deps); // prints ['./b', './c']
-});
-
-getDependencies(srcb, function (deps) {
-  console.log(deps); // prints []
-});
-
-getDependencies(srcc, function (deps) {
-  console.log(deps); // prints []
-});
-```
+console.log(getDependencies(srca); // prints ['./b', './c']
+console.log(getDependencies(srcb); // prints []
+console.log(getDependencies(srcc); // prints []
 
 ### Notes
 
@@ -62,7 +55,7 @@ getDependencies(srcc, function (deps) {
 If there's a require call that doesn't have a string literal but an expression,
 a string (escodegen-generated) representation will be returned.
 
-For example, if a.js was of the "factory" form and contained a dynamic module name:
+For example, if `a.js` was of the "factory" form and contained a dynamic module name:
 
 ```javascript
 // a.js
