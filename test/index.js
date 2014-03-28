@@ -5,7 +5,19 @@ var getDependencies = require('../'),
 
 function run (filepath) {
   var src = fs.readFileSync(filepath);
+  var deps = getDependencies(src);
 
-  console.log(filepath);
-  console.log(getDependencies(src));
+  switch(filepath) {
+    case './amd/a.js':
+      console.log(deps.length === 2);
+      console.log(deps[0] === './b');
+      console.log(deps[1] === './c');
+      break;
+    case './amd/b.js':
+      console.log(deps.length === 0);
+      break;
+    case './amd/c.js':
+      console.log(deps.length === 0);
+      break;
+  }
 }

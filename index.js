@@ -1,5 +1,6 @@
 var Walker = require('node-source-walk'),
-    amdh = require('./helpers/AMDHelper');
+    types = require('ast-module-types'),
+    amdh  = require('./helpers/AMDHelper');
 
 // Assumes src is the source code for a javascript file
 // using any form of the AMD module syntax
@@ -16,7 +17,7 @@ function getDependencies(src) {
   walker.walk(src, function (node) {
     var deps;
 
-    if (! amdh.isDefine(node)) return;
+    if (! types.isDefine(node)) return;
 
     deps = amdh.getDependencies(node);
 

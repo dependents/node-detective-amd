@@ -26,6 +26,7 @@
   "homepage": "https://github.com/mrjoelkemp/node-detective-amd",
   "dependencies": {
     "node-source-walk": "^1.1.0",
-    "escodegen": "^1.3.0"
+    "escodegen": "^1.3.0",
+    "ast-module-types": "^1.0.0"
   }
 }

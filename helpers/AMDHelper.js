@@ -1,4 +1,5 @@
-var Walker = require('node-source-walk'),
+var Walker    = require('node-source-walk'),
+    types     = require('ast-module-types'),
     escodegen = require('escodegen');
 
 // Returns the type of module syntax used if the node
@@ -8,10 +9,10 @@ var Walker = require('node-source-walk'),
 //    define(func(require))           'factory'
 //    define({})                      'nodeps'
 module.exports.getDefineType = function (node) {
-  if (isNamedForm(node))        return 'named';
-  if (isDependencyForm(node))   return 'deps';
-  if (isFactoryForm(node))      return 'factory';
-  if (isNoDependencyForm(node)) return 'nodeps';
+  if (types.isNamedForm(node))        return 'named';
+  if (types.isDependencyForm(node))   return 'deps';
+  if (types.isFactoryForm(node))      return 'factory';
+  if (types.isNoDependencyForm(node)) return 'nodeps';
 
   return null;
 };
@@ -33,52 +34,6 @@ module.exports.getDependencies = function (node) {
 
   return [];
 };
-
-// Whether or not the node represents an AMD define() call
-module.exports.isDefine = function (node) {
-  var c = node.callee;
-
-  return c &&
-    node.type === 'CallExpression' &&
-    c.type    === 'Identifier' &&
-    c.name    === 'define';
-};
-
-//////////////////
-// Form Helpers
-//////////////////
-
-// define('name', [deps], func)
-function isNamedForm(node) {
-  var args = node['arguments'];
-
-  // TODO: Should we also make sure the second element is an array?
-  return args && args[0].type === 'Literal';
-}
-
-// define([deps], func)
-function isDependencyForm(node) {
-  var args = node['arguments'];
-
-  return args && args[0].type === 'ArrayExpression';
-}
-
-// define(func(require))
-function isFactoryForm(node) {
-  var args = node['arguments'],
-      firstParamNode = args.length && args[0].params ? args[0].params[0] : null;
-
-  // Node should have a function whose first param is 'require'
-  return args && args[0].type === 'FunctionExpression' &&
-        firstParamNode && firstParamNode.type === 'Identifier' && firstParamNode.name === 'require';
-}
-
-// define({})
-function isNoDependencyForm(node) {
-  var args = node['arguments'];
-
-  return args && args[0].type === 'ObjectExpression';
-}
 
 //////////////////
 // Dependency Helpers
@@ -103,7 +58,7 @@ function getFactoryFormDeps(node) {
 
   walker.traverse(node, function (innerNode) {
     // Look for require function calls
-    if (isRequire(innerNode)) {
+    if (types.isRequire(innerNode)) {
       // Store the name of the required entity
       if (innerNode['arguments'].length) {
         dependencies.push(getEvaluatedValue(innerNode['arguments'][0]));
@@ -112,16 +67,6 @@ function getFactoryFormDeps(node) {
   });
 
   return dependencies;
-}
-
-// Whether or not the node represents a require function call
-function isRequire(node) {
-  var c = node.callee;
-
-  return c &&
-        node.type  === 'CallExpression' &&
-        c.type     === 'Identifier' &&
-        c.name     === 'require';
 }
 
 // Returns the literal values from the passed array
