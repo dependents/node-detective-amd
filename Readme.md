@@ -25,6 +25,7 @@ define({
 define(function () {
   return 'bar';
 });
+
 ```
 
 Here's how you can grab the list of dependencies of a.js
@@ -37,10 +38,11 @@ var srcb = fs.readFileSync('b.js');
 var srcc = fs.readFileSync('c.js');
 
 // Pass in the source code as a string
-console.log(getDependencies(srca); // prints ['./b', './c']
-console.log(getDependencies(srcb); // prints []
-console.log(getDependencies(srcc); // prints []
+console.log(getDependencies(srca)); // prints ['./b', './c']
+console.log(getDependencies(srcb)); // prints []
+console.log(getDependencies(srcc)); // prints []
 
+```
 ### Notes
 
 **Supports the 4 forms of AMD syntax:**
