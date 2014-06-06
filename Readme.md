@@ -31,7 +31,7 @@ define(function () {
 Here's how you can grab the list of dependencies of a.js
 
 ```javascript
-var getDependencies = require('node-detective-amd');
+var getDependencies = require('detective-amd');
 
 var srca = fs.readFileSync('a.js');
 var srcb = fs.readFileSync('b.js');
