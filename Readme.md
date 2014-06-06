@@ -28,7 +28,7 @@ define(function () {
 
 ```
 
-Here's how you can grab the list of dependencies of a.js
+Here's how you can grab the list of dependencies of `a.js` **synchronously**.
 
 ```javascript
 var getDependencies = require('detective-amd');
@@ -51,6 +51,18 @@ console.log(getDependencies(srcc)); // prints []
 * "dependency list": `define([deps], func)`
 * "factory": `define(func(require))`
 * "no dependencies": `define({})`
+
+**Supports driver scripts**
+
+You can also find the dependencies from a script that has a top-level require (an app initialization/driver/entry-point script):
+
+```javascript
+require([
+  './a'
+], function (a) {
+  // My app will get booted up from here
+});
+```
 
 **Expression-based requires**
 

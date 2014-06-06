@@ -17,7 +17,7 @@ function getDependencies(src) {
   walker.walk(src, function (node) {
     var deps;
 
-    if (! types.isDefine(node)) return;
+    if (! types.isTopLevelRequire(node) && ! types.isDefine(node)) return;
 
     deps = amdh.getDependencies(node);
 
