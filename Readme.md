@@ -52,6 +52,12 @@ console.log(getDependencies(srcc)); // prints []
 * "factory": `define(func(require))`
 * "no dependencies": `define({})`
 
+Also supports "driver script" syntax:
+
+`require([deps], func)`
+
+Also handles dynamically loaded dependencies (ex: inner requires).
+
 **Supports driver scripts**
 
 You can also find the dependencies from a script that has a top-level require (an app initialization/driver/entry-point script):

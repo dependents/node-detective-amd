@@ -4,7 +4,3 @@ define(function (require) {
 
   console.log(b, c);
 });
-
-// define(['./b', './c'], function (b, c) {
-//   console.log(b, c);
-// });
