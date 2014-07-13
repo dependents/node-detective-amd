@@ -1,3 +1,5 @@
+# Detective-AMD [![npm](http://img.shields.io/npm/v/detective-amd.svg)](https://npmjs.org/package/detective-amd) [![npm](http://img.shields.io/npm/dm/detective-amd.svg)](https://npmjs.org/package/detective-amd)
+
 Returns a list of dependencies for a given JavaScript file using
 any of the AMD module syntaxes.
 
