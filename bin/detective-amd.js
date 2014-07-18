@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+'use strict';
+
 var getDependencies = require('../'),
     filename = process.argv[2],
     fs = require('fs');
