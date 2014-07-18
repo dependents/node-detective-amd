@@ -9,6 +9,9 @@
   "scripts": {
     "test": "node test/index.js"
   },
+  "bin": {
+    "detective-amd": "bin/detective-amd.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mrjoelkemp/node-detective-amd"
