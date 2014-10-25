@@ -1,6 +1,7 @@
 var Walker    = require('node-source-walk'),
     types     = require('ast-module-types'),
-    escodegen = require('escodegen');
+    escodegen = require('escodegen'),
+    getModuleType = require('get-amd-module-type');
 
 /** @param {String} src the source code for a javascript file using any form of the AMD module syntax */
 module.exports = function (src) {
@@ -26,28 +27,9 @@ module.exports = function (src) {
   });
 };
 
-/**
- * @returns {String|null} the type of module syntax used if the node
- * adheres to one of the following syntaxes, or null if it's an unsupported form
- *
- * @example
- * define('name', [deps], func)    'named'
- * define([deps], func)            'deps'
- * define(func(require))           'factory'
- * define({})                      'nodeps'
- */
-function getDefineType(node) {
-  if (types.isNamedForm(node))        return 'named';
-  if (types.isDependencyForm(node))   return 'deps';
-  if (types.isFactoryForm(node))      return 'factory';
-  if (types.isNoDependencyForm(node)) return 'nodeps';
-
-  return null;
-}
-
 /** @returns {String[]} A list of file dependencies or an empty list if there are no dependencies */
 function getDependencies(node) {
-  var type = getDefineType(node),
+  var type = getModuleType(node),
   dependencies;
 
   // Note: No need to handle nodeps since there won't be any dependencies
@@ -55,8 +37,10 @@ function getDependencies(node) {
     case 'named':
       return getNamedFormDeps(node);
     case 'deps':
+    case 'driver':
       return getDependencyFormDeps(node);
     case 'factory':
+    case 'rem':
       return getFactoryFormDeps(node);
   }
 
