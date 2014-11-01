@@ -13,7 +13,7 @@ module.exports = function (src) {
   walker.walk(src, function (node) {
     var deps;
 
-    if (! types.isTopLevelRequire(node) && ! types.isDefine(node)) return;
+    if (! types.isTopLevelRequire(node) && ! types.isDefine(node) && ! types.isRequire(node)) return;
 
     deps = getDependencies(node);
     if (deps.length) {
@@ -30,7 +30,7 @@ module.exports = function (src) {
 /** @returns {String[]} A list of file dependencies or an empty list if there are no dependencies */
 function getDependencies(node) {
   var type = getModuleType(node),
-  dependencies;
+      dependencies;
 
   // Note: No need to handle nodeps since there won't be any dependencies
   switch(type) {

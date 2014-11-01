@@ -58,4 +58,11 @@ describe('detective-amd', function() {
     assert(deps[0] === './a');
     assert(deps[1] === './b');
   });
+
+  it('handles nested driver scripts', function() {
+    var deps = getDepsOf('./amd/IIFEWithDriver.js');
+    assert(deps.length === 2);
+    assert(deps[0] === 'a');
+    assert(deps[1] === 'b');
+  });
 });
