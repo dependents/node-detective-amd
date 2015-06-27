@@ -1,6 +1,6 @@
 {
   "name": "detective-amd",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Find all dependencies within a JavaScript file using AMD module syntax",
   "main": "index.js",
   "directories": {
