@@ -19,7 +19,9 @@
   "keywords": [
     "amd",
     "detective",
-    "dependencies"
+    "dependencies",
+    "ast",
+    "static analysis"
   ],
   "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
   "license": "MIT",
@@ -31,7 +33,7 @@
     "ast-module-types": "~1.1.1",
     "escodegen": "~1.3.0",
     "get-amd-module-type": "~1.0.0",
-    "node-source-walk": "~1.4.0"
+    "node-source-walk": "~2.0.0"
   },
   "devDependencies": {
     "mocha": "~2.0.1"
