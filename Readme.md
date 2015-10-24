@@ -2,9 +2,11 @@
 
 Returns a list of dependencies for a given JavaScript file or AST using any of the AMD module syntaxes.
 
-*Inspired by substack/node-detective but built for AMD*
+*Inspired by substack/node-detective but built for AMD.*
 
 `npm install detective-amd`
+
+* Supports JSX code via [node-source-walk](https://github.com/mrjoelkemp/node-source-walk).
 
 ### Usage
 

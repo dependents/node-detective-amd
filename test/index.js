@@ -51,6 +51,12 @@ describe('detective-amd', function() {
     });
   });
 
+  it('supports jsx', function() {
+    assert.doesNotThrow(function() {
+      getDependencies('define({ foo: function(){ return <jsx />; } });');
+    });
+  });
+
   it('returns the dependencies of the factory form', function() {
     var deps = getDepsOf('./amd/factory.js');
     assert(deps.length === 2);
