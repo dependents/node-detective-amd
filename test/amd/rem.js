@@ -1,6 +1,6 @@
-define(function (require, exports, module) {
- var a = require('a'),
-     b = require('b');
+define(function(require, exports, module) {
+  var a = require('a');
+  var b = require('b');
 
- exports.action = function () {};
+  exports.action = function() {};
 });

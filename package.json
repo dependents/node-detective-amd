@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "jscs -p google index.js test/**/*.js bin/*.js && mocha"
   },
   "bin": {
     "detective-amd": "bin/detective-amd.js"
@@ -21,7 +21,10 @@
     "detective",
     "dependencies",
     "ast",
-    "static analysis"
+    "static analysis",
+    "requirejs",
+    "jsx",
+    "module"
   ],
   "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
   "license": "MIT",
@@ -36,6 +39,7 @@
     "node-source-walk": "^2.0.0"
   },
   "devDependencies": {
+    "jscs": "~2.4.0",
     "mocha": "~2.0.1"
   }
 }

@@ -2,11 +2,11 @@
 
 'use strict';
 
-var getDependencies = require('../'),
-    filename = process.argv[2],
-    fs = require('fs');
+var getDependencies = require('../');
+var filename = process.argv[2];
+var fs = require('fs');
 
-if (! filename) {
+if (!filename) {
   console.log('Filename not supplied');
   console.log('Usage: detective-amd <filename>');
 
