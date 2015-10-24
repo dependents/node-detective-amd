@@ -1,21 +1,26 @@
-var Walker    = require('node-source-walk'),
-    types     = require('ast-module-types'),
-    escodegen = require('escodegen'),
-    getModuleType = require('get-amd-module-type');
+var Walker = require('node-source-walk');
+var types = require('ast-module-types');
+var escodegen = require('escodegen');
+var getModuleType = require('get-amd-module-type');
 
 /** @param {String} src the source code for a javascript file using any form of the AMD module syntax */
-module.exports = function (src) {
-  var dependencies = [],
-      walker = new Walker();
+module.exports = function(src) {
+  var dependencies = [];
+  var walker = new Walker();
 
-  if (! src) throw new Error('src not given');
+  if (!src) { throw new Error('src not given'); }
 
-  walker.walk(src, function (node) {
+  walker.walk(src, function(node) {
     var deps;
 
-    if (! types.isTopLevelRequire(node) && ! types.isDefine(node) && ! types.isRequire(node)) return;
+    if (!types.isTopLevelRequire(node) &&
+        !types.isDefine(node) &&
+        !types.isRequire(node)) {
+      return;
+    }
 
     deps = getDependencies(node);
+
     if (deps.length) {
       dependencies = dependencies.concat(deps);
     }
@@ -29,11 +34,11 @@ module.exports = function (src) {
 
 /** @returns {String[]} A list of file dependencies or an empty list if there are no dependencies */
 function getDependencies(node) {
-  var type = getModuleType(node),
-      dependencies;
+  var type = getModuleType(node);
+  var dependencies;
 
   // Note: No need to handle nodeps since there won't be any dependencies
-  switch(type) {
+  switch (type) {
     case 'named':
       return getNamedFormDeps(node);
     case 'deps':
@@ -52,13 +57,13 @@ function getDependencies(node) {
 //////////////////
 
 function getNamedFormDeps(node) {
-  var args = node['arguments'] || [];
+  var args = node.arguments || [];
 
   return getElementValues(args[1]).concat(getInnerDependencies(node));
 }
 
 function getDependencyFormDeps(node) {
-  var args = node['arguments'] || [];
+  var args = node.arguments || [];
 
   return getElementValues(args[0]).concat(getInnerDependencies(node));
 }
@@ -69,20 +74,22 @@ function getFactoryFormDeps(node) {
 
 /**
  * Looks for dynamic module loading
+ *
  * @param  {AST} node
  * @return {String[]} List of dynamically required dependencies
  */
 function getInnerDependencies(node) {
   // Use logic from node-detective to find require calls
-  var walker = new Walker(),
-      dependencies = [],
-      requireArgs, deps;
+  var walker = new Walker();
+  var dependencies = [];
+  var requireArgs;
+  var deps;
 
-  walker.traverse(node, function (innerNode) {
+  walker.traverse(node, function(innerNode) {
     if (types.isRequire(innerNode)) {
-      requireArgs = innerNode['arguments'];
+      requireArgs = innerNode.arguments;
 
-      if (! requireArgs.length) return;
+      if (!requireArgs.length) { return; }
 
       // Either require('x') or require(['x'])
       deps = requireArgs[0];
@@ -105,7 +112,7 @@ function getInnerDependencies(node) {
 function getElementValues(nodeArguments) {
   var elements = nodeArguments.elements || [];
 
-  return elements.map(function (el) {
+  return elements.map(function(el) {
     return getEvaluatedValue(el);
   });
 }
@@ -115,7 +122,7 @@ function getElementValues(nodeArguments) {
  * @returns {String} the statement represented by AST node
  */
 function getEvaluatedValue(node) {
-  if (node.type === 'Literal') return node.value;
+  if (node.type === 'Literal') { return node.value; }
 
   return escodegen.generate(node);
 }
