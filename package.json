@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "jscs -p google index.js test/**/*.js bin/*.js && mocha"
+    "test": "jscs index.js test/**/*.js bin/*.js && mocha"
   },
   "bin": {
     "detective-amd": "bin/detective-amd.js"
@@ -33,13 +33,14 @@
   },
   "homepage": "https://github.com/mrjoelkemp/node-detective-amd",
   "dependencies": {
-    "ast-module-types": "^2.0.0",
-    "escodegen": "^1.3.0",
-    "get-amd-module-type": "^1.0.0",
-    "node-source-walk": "^2.0.0"
+    "ast-module-types": "^2.3.1",
+    "escodegen": "^1.8.0",
+    "get-amd-module-type": "^2.0.4",
+    "node-source-walk": "^3.0.0"
   },
   "devDependencies": {
-    "jscs": "~2.4.0",
+    "jscs": "~2.11.0",
+    "jscs-preset-mrjoelkemp": "~1.0.0",
     "mocha": "~2.0.1"
   }
 }
