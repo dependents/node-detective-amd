@@ -114,7 +114,7 @@ function getElementValues(nodeArguments) {
 
   return elements.map(function(el) {
     return getEvaluatedValue(el);
-  });
+  }).filter(Boolean);
 }
 
 /**
@@ -123,5 +123,6 @@ function getElementValues(nodeArguments) {
  */
 function getEvaluatedValue(node) {
   if (node.type === 'Literal' || node.type === 'StringLiteral') { return node.value; }
+  if (node.type === 'CallExpression') { return ''; }
   return escodegen.generate(node);
 }
