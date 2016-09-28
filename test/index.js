@@ -113,4 +113,10 @@ describe('detective-amd', function() {
     assert(deps[0] === 'a');
     assert(deps[1] === 'b');
   });
+
+  it('skips dynamic computed dependencies', function() {
+    var deps = getDepsOf('./amd/dynamicComputedRequire.js');
+    assert(deps.length === 1);
+    assert(deps[0] === './a');
+  });
 });
