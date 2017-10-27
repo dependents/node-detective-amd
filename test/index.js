@@ -88,6 +88,13 @@ describe('detective-amd', function() {
     assert(deps[0] === 'a');
   });
 
+  it('returns the dependencies of the named factory', function() {
+    var deps = getDepsOf('./amd/namedFactory.js');
+    assert(deps.length === 2);
+    assert(deps[0] === './b');
+    assert(deps[1] === './c');
+  });
+
   it('returns the dependencies of the dependency form', function() {
     var deps = getDepsOf('./amd/dep.js');
     assert(deps.length === 2);

@@ -55,7 +55,6 @@ module.exports = function(src, options) {
  */
 function getDependencies(node, type, options) {
   var dependencies;
-
   // Note: No need to handle nodeps since there won't be any dependencies
   switch (type) {
     case 'named':
@@ -119,7 +118,10 @@ function getElementValues(nodeArguments) {
       return getEvaluatedValue(el);
     }).filter(Boolean);
   } else {
-    dependencies.push(getEvaluatedValue(nodeArguments));
+    var dep = getEvaluatedValue(nodeArguments);
+    if (dep) {
+      dependencies.push(getEvaluatedValue(nodeArguments));
+    }
   }
   return dependencies;
 }
@@ -130,6 +132,6 @@ function getElementValues(nodeArguments) {
  */
 function getEvaluatedValue(node) {
   if (node.type === 'Literal' || node.type === 'StringLiteral') { return node.value; }
-  if (node.type === 'CallExpression') { return ''; }
+  if (node.type === 'CallExpression' || node.type === 'FunctionExpression') { return ''; }
   return escodegen.generate(node);
 }
