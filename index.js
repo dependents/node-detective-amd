@@ -111,11 +111,16 @@ function getLazyLoadedDeps(node) {
  * @returns {String[]} the literal values from the passed array
  */
 function getElementValues(nodeArguments) {
-  var elements = nodeArguments.elements || [];
-
-  return elements.map(function(el) {
-    return getEvaluatedValue(el);
-  }).filter(Boolean);
+  var dependencies = [];
+  if (nodeArguments.type === 'ArrayExpression') {
+    var elements = nodeArguments.elements || [];
+    dependencies = elements.map(function(el) {
+      return getEvaluatedValue(el);
+    }).filter(Boolean);
+  } else {
+    dependencies.push(getEvaluatedValue(nodeArguments));
+  }
+  return dependencies;
 }
 
 /**

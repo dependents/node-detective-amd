@@ -1,7 +1,7 @@
-var detective = require('../'),
-    fs     = require('fs'),
-    assert = require('assert'),
-    path   = require('path');
+var detective = require('../');
+var fs     = require('fs');
+var assert = require('assert');
+var path   = require('path');
 
 describe('detective-amd', function() {
   function getDepsOf(filepath, options) {
@@ -17,8 +17,8 @@ describe('detective-amd', function() {
         expression: {
           type: 'CallExpression',
           callee: {
-              type: 'Identifier',
-              name: 'define'
+            type: 'Identifier',
+            name: 'define'
           },
           arguments: [
             {
@@ -37,7 +37,8 @@ describe('detective-amd', function() {
               rest: null,
               generator: false,
               expression: false
-          }]
+            }
+          ]
         }
       }]
     };
@@ -130,6 +131,12 @@ describe('detective-amd', function() {
     var deps = getDepsOf('./amd/dynamicComputedRequire.js');
     assert(deps.length === 1);
     assert(deps[0] === './a');
+  });
+
+  it('expression-based define expressions', function() {
+    var deps = getDepsOf('./amd/expressionDefine.js');
+    assert(deps.length === 1);
+    assert(deps[0] === 'depList + [\'anotherBar\']');
   });
 
   describe('when given the option to omit lazy loaded requires', function() {
