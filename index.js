@@ -2,6 +2,7 @@ var Walker = require('node-source-walk');
 var types = require('ast-module-types');
 var escodegen = require('escodegen');
 var getModuleType = require('get-amd-module-type');
+var parser = require('esprima-fb');
 
 /**
  * @param  {String} src - the string content or AST of an AMD module
@@ -13,7 +14,7 @@ module.exports = function(src, options) {
   options = options || {};
 
   var dependencies = [];
-  var walker = new Walker();
+  var walker = new Walker({parser: parser});
 
   if (typeof src === 'undefined') { throw new Error('src not given'); }
   if (src === '') { return dependencies; }
