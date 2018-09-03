@@ -32,6 +32,9 @@
     "url": "https://github.com/mrjoelkemp/node-detective-amd/issues"
   },
   "homepage": "https://github.com/mrjoelkemp/node-detective-amd",
+  "engines": {
+    "node": ">= 6.0"
+  },
   "dependencies": {
     "ast-module-types": "^2.3.1",
     "escodegen": "^1.8.0",
