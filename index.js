@@ -1,7 +1,9 @@
-var Walker = require('node-source-walk');
-var types = require('ast-module-types');
-var escodegen = require('escodegen');
-var getModuleType = require('get-amd-module-type');
+'use strict';
+
+const Walker = require('node-source-walk');
+const types = require('ast-module-types');
+const escodegen = require('escodegen');
+const getModuleType = require('get-amd-module-type');
 
 /**
  * @param  {String} src - the string content or AST of an AMD module
@@ -9,31 +11,27 @@ var getModuleType = require('get-amd-module-type');
  * @param  {Object} [options.skipLazyLoaded] - whether or not to omit inner (non-REM) required dependencies
  * @return {String[]} List of partials/dependencies referenced in the given file
  */
-module.exports = function(src, options) {
-  options = options || {};
-
-  var dependencies = [];
-  var walker = new Walker();
+module.exports = function(src, options = {}) {
+  let dependencies = [];
+  const walker = new Walker();
 
   if (typeof src === 'undefined') { throw new Error('src not given'); }
   if (src === '') { return dependencies; }
 
   walker.walk(src, function(node) {
-    var deps;
-
     if (!types.isTopLevelRequire(node) &&
         !types.isDefine(node) &&
         !types.isRequire(node)) {
       return;
     }
 
-    var type = getModuleType.fromAST(node);
+    const type = getModuleType.fromAST(node);
 
     if (!types.isTopLevelRequire(node) && types.isRequire(node) && type !== 'rem' && options.skipLazyLoaded) {
       return;
     }
 
-    deps = getDependencies(node, type, options);
+    const deps = getDependencies(node, type, options);
 
     if (deps.length) {
       dependencies = dependencies.concat(deps);
@@ -53,8 +51,6 @@ module.exports = function(src, options) {
  * @returns {String[]} A list of file dependencies or an empty list if the type is unsupported
  */
 function getDependencies(node, type, options) {
-  var dependencies;
-
   // Note: No need to handle nodeps since there won't be any dependencies
   switch (type) {
     case 'named':
@@ -81,19 +77,17 @@ function getDependencies(node, type, options) {
  */
 function getLazyLoadedDeps(node) {
   // Use logic from node-detective to find require calls
-  var walker = new Walker();
-  var dependencies = [];
-  var requireArgs;
-  var deps;
+  const walker = new Walker();
+  let dependencies = [];
 
   walker.traverse(node, function(innerNode) {
     if (types.isRequire(innerNode)) {
-      requireArgs = innerNode.arguments;
+      const requireArgs = innerNode.arguments;
 
       if (!requireArgs.length) { return; }
 
       // Either require('x') or require(['x'])
-      deps = requireArgs[0];
+      const deps = requireArgs[0];
 
       if (deps.type === 'ArrayExpression') {
         dependencies = dependencies.concat(getElementValues(deps));
@@ -111,7 +105,7 @@ function getLazyLoadedDeps(node) {
  * @returns {String[]} the literal values from the passed array
  */
 function getElementValues(nodeArguments) {
-  var elements = nodeArguments.elements || [];
+  const elements = nodeArguments.elements || [];
 
   return elements.map(function(el) {
     return getEvaluatedValue(el);
