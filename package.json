@@ -32,15 +32,18 @@
     "url": "https://github.com/mrjoelkemp/node-detective-amd/issues"
   },
   "homepage": "https://github.com/mrjoelkemp/node-detective-amd",
+  "engines": {
+    "node": ">= 6.0"
+  },
   "dependencies": {
     "ast-module-types": "^2.3.1",
     "escodegen": "^1.8.0",
-    "get-amd-module-type": "^2.0.4",
-    "node-source-walk": "^3.0.0"
+    "get-amd-module-type": "^3.0.0",
+    "node-source-walk": "^4.0.0"
   },
   "devDependencies": {
     "jscs": "~2.11.0",
     "jscs-preset-mrjoelkemp": "~1.0.0",
-    "mocha": "~2.0.1"
+    "mocha": "^5.2.0"
   }
 }

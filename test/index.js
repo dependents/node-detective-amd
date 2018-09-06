@@ -1,16 +1,18 @@
-var detective = require('../'),
+'use strict';
+
+const detective = require('../'),
     fs     = require('fs'),
     assert = require('assert'),
     path   = require('path');
 
 describe('detective-amd', function() {
   function getDepsOf(filepath, options) {
-    var src = fs.readFileSync(path.resolve(__dirname, filepath), 'utf8');
+    const src = fs.readFileSync(path.resolve(__dirname, filepath), 'utf8');
     return detective(src, options);
   }
 
   it('accepts an AST', function() {
-    var amdAST = {
+    const amdAST = {
       type: 'Program',
       body: [{
         type: 'ExpressionStatement',
@@ -42,7 +44,7 @@ describe('detective-amd', function() {
       }]
     };
 
-    var deps = detective(amdAST);
+    const deps = detective(amdAST);
     assert(!deps.length);
   });
 
@@ -70,71 +72,71 @@ describe('detective-amd', function() {
   });
 
   it('returns the dependencies of the factory form', function() {
-    var deps = getDepsOf('./amd/factory.js');
+    const deps = getDepsOf('./amd/factory.js');
     assert(deps.length === 2);
     assert(deps[0] === './b');
     assert(deps[1] === './c');
   });
 
   it('returns the an empty list for the no dependency form', function() {
-    var deps = getDepsOf('./amd/nodep.js');
+    const deps = getDepsOf('./amd/nodep.js');
     assert(deps.length === 0);
   });
 
   it('returns the dependencies of the named form', function() {
-    var deps = getDepsOf('./amd/named.js');
+    const deps = getDepsOf('./amd/named.js');
     assert(deps.length === 1);
     assert(deps[0] === 'a');
   });
 
   it('returns the dependencies of the dependency form', function() {
-    var deps = getDepsOf('./amd/dep.js');
+    const deps = getDepsOf('./amd/dep.js');
     assert(deps.length === 2);
     assert(deps[0] === './a');
     assert(deps[1] === './b');
   });
 
   it('returns the dependencies for the REM form (#2)', function() {
-    var deps = getDepsOf('./amd/rem.js');
+    const deps = getDepsOf('./amd/rem.js');
     assert(deps.length === 2);
     assert(deps[0] === 'a');
     assert(deps[1] === 'b');
   });
 
   it('returns the emtpy list for non-amd modules', function() {
-    var deps = getDepsOf('./amd/empty.js');
+    const deps = getDepsOf('./amd/empty.js');
     assert(!deps.length);
   });
 
   it('returns the dependencies of a driver script', function() {
-    var deps = getDepsOf('./amd/driver.js');
+    const deps = getDepsOf('./amd/driver.js');
     assert(deps.length === 1);
     assert(deps[0] === './a');
   });
 
   it('includes dynamic requires as dependencies', function() {
-    var deps = getDepsOf('./amd/dynamicRequire.js');
+    const deps = getDepsOf('./amd/dynamicRequire.js');
     assert(deps.length === 2);
     assert(deps[0] === './a');
     assert(deps[1] === './b');
   });
 
   it('handles nested driver scripts', function() {
-    var deps = getDepsOf('./amd/IIFEWithDriver.js');
+    const deps = getDepsOf('./amd/IIFEWithDriver.js');
     assert(deps.length === 2);
     assert(deps[0] === 'a');
     assert(deps[1] === 'b');
   });
 
   it('skips dynamic computed dependencies', function() {
-    var deps = getDepsOf('./amd/dynamicComputedRequire.js');
+    const deps = getDepsOf('./amd/dynamicComputedRequire.js');
     assert(deps.length === 1);
     assert(deps[0] === './a');
   });
 
   describe('when given the option to omit lazy loaded requires', function() {
     it('does not include them in the list of dependencies', function() {
-      var deps = getDepsOf('./amd/dynamicRequire.js', {
+      const deps = getDepsOf('./amd/dynamicRequire.js', {
         skipLazyLoaded: true
       });
 
@@ -143,7 +145,7 @@ describe('detective-amd', function() {
     });
 
     it('still returns the inner dependencies of an REM-form module', function() {
-      var deps = getDepsOf('./amd/rem.js', {
+      const deps = getDepsOf('./amd/rem.js', {
         skipLazyLoaded: true
       });
 
