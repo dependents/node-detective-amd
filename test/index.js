@@ -134,6 +134,11 @@ describe('detective-amd', function() {
     assert(deps[0] === './a');
   });
 
+  it('does not mistakenly try to parse generic defines as amd', function() {
+    const deps = getDepsOf('./notAmd.js');
+    assert(deps.length === 0);
+  });
+
   describe('when given the option to omit lazy loaded requires', function() {
     it('does not include them in the list of dependencies', function() {
       const deps = getDepsOf('./amd/dynamicRequire.js', {
