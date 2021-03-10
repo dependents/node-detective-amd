@@ -42,8 +42,8 @@
     "node-source-walk": "^4.0.0"
   },
   "devDependencies": {
-    "jscs": "~2.11.0",
-    "jscs-preset-mrjoelkemp": "~1.0.0",
+    "jscs": "^3.0.7",
+    "jscs-preset-mrjoelkemp": "^2.0.0",
     "mocha": "^6.2.3"
   }
 }
