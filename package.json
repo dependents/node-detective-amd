@@ -3,18 +3,21 @@
   "version": "3.1.0",
   "description": "Find all dependencies within a JavaScript file using AMD module syntax",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "jscs index.js test/**/*.js bin/*.js && mocha"
-  },
   "bin": {
-    "detective-amd": "bin/detective-amd.js"
+    "detective-amd": "bin/cli.js"
+  },
+  "files": [
+    "bin/cli.js",
+    "index.js"
+  ],
+  "scripts": {
+    "lint": "eslint bin index.js \"test/*.js\"",
+    "mocha": "mocha",
+    "test": "npm run lint && npm run mocha"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrjoelkemp/node-detective-amd"
+    "url": "git+https://github.com/dependents/node-detective-amd.git"
   },
   "keywords": [
     "amd",
@@ -26,24 +29,23 @@
     "jsx",
     "module"
   ],
-  "author": "Joel Kemp <joel@mrjoelkemp.com> (http://www.mrjoelkemp.com/)",
+  "author": "Joel Kemp <joel@mrjoelkemp.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrjoelkemp/node-detective-amd/issues"
+    "url": "https://github.com/dependents/node-detective-amd/issues"
   },
-  "homepage": "https://github.com/mrjoelkemp/node-detective-amd",
+  "homepage": "https://github.com/dependents/node-detective-amd",
   "engines": {
-    "node": ">= 6.0"
+    "node": ">=6.0"
   },
   "dependencies": {
-    "ast-module-types": "^2.7.0",
+    "ast-module-types": "^2.7.1",
     "escodegen": "^2.0.0",
     "get-amd-module-type": "^3.0.0",
-    "node-source-walk": "^4.0.0"
+    "node-source-walk": "^4.2.0"
   },
   "devDependencies": {
-    "jscs": "^3.0.7",
-    "jscs-preset-mrjoelkemp": "^2.0.0",
+    "eslint": "^5.16.0",
     "mocha": "^6.2.3"
   }
 }

@@ -1,18 +1,20 @@
-# Detective-AMD [![npm](http://img.shields.io/npm/v/detective-amd.svg)](https://npmjs.org/package/detective-amd) [![npm](http://img.shields.io/npm/dm/detective-amd.svg)](https://npmjs.org/package/detective-amd)
+# Detective-AMD [![CI](https://github.com/dependents/node-detective-amd/actions/workflows/ci.yml/badge.svg)](https://github.com/dependents/node-detective-amd/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/detective-amd)](https://www.npmjs.com/package/detective-amd) [![npm](https://img.shields.io/npm/dm/detective-amd)](https://www.npmjs.com/package/detective-amd)
 
 Returns a list of dependencies for a given JavaScript file or AST using any of the AMD module syntaxes.
 
 *Inspired by substack/node-detective but built for AMD.*
 
-`npm install --save detective-amd`
+```sh
+npm install detective-amd
+```
 
-* Supports JSX code via [node-source-walk](https://github.com/mrjoelkemp/node-source-walk).
+* Supports JSX code via [node-source-walk](https://github.com/dependents/node-source-walk).
 
 ### Usage
 
 Let's say we have the following file definitions:
 
-```javascript
+```js
 
 // a.js
 define(['./b', './c'], function (b, c) {
@@ -33,14 +35,13 @@ define(function () {
 
 Here's how you can grab the list of dependencies of `a.js` **synchronously**.
 
-```javascript
-var detective = require('detective-amd');
+```js
+const detective = require('detective-amd');
 
-var srca = fs.readFileSync('a.js', 'utf8');
+const srca = fs.readFileSync('a.js', 'utf8');
 
 // Pass in the source code or an AST (if you've already parsed the file)
 console.log(detective(srca)); // prints ['./b', './c']
-
 ```
 
 You may also (optionally) configure the detective via a second object argument `detective(src, options)` that supports the following options:
@@ -68,7 +69,7 @@ Also handles dynamically loaded dependencies (ex: inner requires).
 
 You can also find the dependencies from a script that has a top-level require (an app initialization/driver/entry-point script):
 
-```javascript
+```js
 require([
   './a'
 ], function (a) {
@@ -83,15 +84,15 @@ a string (escodegen-generated) representation will be returned.
 
 For example, if `a.js` was of the "factory" form and contained a dynamic module name:
 
-```javascript
+```js
 // a.js
 
 define(function (require) {
   // Assume str is some variable that gets set to a string dynamically
-  // var str = ...
+  // const str = ...
 
-  var b = require('./' + str),
-      c = require('./c');
+  const b = require('./' + str);
+  const c = require('./c');
 
   console.log(b, c);
 });
