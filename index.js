@@ -13,15 +13,14 @@ const getModuleType = require('get-amd-module-type');
  */
 module.exports = function(src, options = {}) {
   let dependencies = [];
+
+  if (typeof src === 'undefined') throw new Error('src not given');
+  if (src === '') return dependencies;
+
   const walker = new Walker();
 
-  if (typeof src === 'undefined') { throw new Error('src not given'); }
-  if (src === '') { return dependencies; }
-
-  walker.walk(src, function(node) {
-    if (!types.isTopLevelRequire(node) &&
-        !types.isDefineAMD(node) &&
-        !types.isRequire(node)) {
+  walker.walk(src, (node) => {
+    if (!types.isTopLevelRequire(node) && !types.isDefineAMD(node) && !types.isRequire(node)) {
       return;
     }
 
@@ -33,15 +32,13 @@ module.exports = function(src, options = {}) {
 
     const deps = getDependencies(node, type, options);
 
-    if (deps.length) {
+    if (deps.length > 0) {
       dependencies = dependencies.concat(deps);
     }
   });
 
   // Avoid duplicates
-  return dependencies.filter(function(dep, idx) {
-    return dependencies.indexOf(dep) === idx;
-  });
+  return dependencies.filter((dep, idx) => dependencies.indexOf(dep) === idx);
 };
 
 /**
@@ -53,13 +50,15 @@ module.exports = function(src, options = {}) {
 function getDependencies(node, type, options) {
   // Note: No need to handle nodeps since there won't be any dependencies
   switch (type) {
-    case 'named':
-      var args = node.arguments || [];
+    case 'named': {
+      const args = node.arguments || [];
       return getElementValues(args[1]).concat(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node));
+    }
     case 'deps':
-    case 'driver':
-      var args = node.arguments || [];
+    case 'driver': {
+      const args = node.arguments || [];
       return getElementValues(args[0]).concat(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node));
+    }
     case 'factory':
     case 'rem':
       // REM inner requires aren't really "lazy loaded," but the form is the same
@@ -80,11 +79,11 @@ function getLazyLoadedDeps(node) {
   const walker = new Walker();
   let dependencies = [];
 
-  walker.traverse(node, function(innerNode) {
+  walker.traverse(node, (innerNode) => {
     if (types.isRequire(innerNode)) {
       const requireArgs = innerNode.arguments;
 
-      if (!requireArgs.length) { return; }
+      if (requireArgs.length === 0) return;
 
       // Either require('x') or require(['x'])
       const deps = requireArgs[0];
@@ -107,9 +106,7 @@ function getLazyLoadedDeps(node) {
 function getElementValues(nodeArguments) {
   const elements = nodeArguments.elements || [];
 
-  return elements.map(function(el) {
-    return getEvaluatedValue(el);
-  }).filter(Boolean);
+  return elements.map((el) => getEvaluatedValue(el)).filter(Boolean);
 }
 
 /**
@@ -117,7 +114,8 @@ function getElementValues(nodeArguments) {
  * @returns {String} the statement represented by AST node
  */
 function getEvaluatedValue(node) {
-  if (node.type === 'Literal' || node.type === 'StringLiteral') { return node.value; }
-  if (node.type === 'CallExpression') { return ''; }
+  if (node.type === 'Literal' || node.type === 'StringLiteral') return node.value;
+  if (node.type === 'CallExpression') return '';
+
   return escodegen.generate(node);
 }
