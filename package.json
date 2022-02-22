@@ -39,7 +39,7 @@
     "node": ">=6.0"
   },
   "dependencies": {
-    "ast-module-types": "^2.7.1",
+    "ast-module-types": "^3.0.0",
     "escodegen": "^2.0.0",
     "get-amd-module-type": "^3.0.0",
     "node-source-walk": "^4.2.0"
