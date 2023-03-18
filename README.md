@@ -1,4 +1,4 @@
-### detective-amd [![CI](https://img.shields.io/github/workflow/status/dependents/node-detective-amd/CI/main?label=CI&logo=github)](https://github.com/dependents/node-detective-amd/actions/workflows/ci.yml?query=branch%3Amain) [![npm](https://img.shields.io/npm/v/detective-amd)](https://www.npmjs.com/package/detective-amd) [![npm](https://img.shields.io/npm/dm/detective-amd)](https://www.npmjs.com/package/detective-amd)
+### detective-amd [![CI](https://img.shields.io/github/actions/workflow/status/dependents/node-detective-amd/ci.yml?branch=main&label=CI&logo=github)](https://github.com/dependents/node-detective-amd/actions/workflows/ci.yml?query=branch%3Amain) [![npm](https://img.shields.io/npm/v/detective-amd)](https://www.npmjs.com/package/detective-amd) [![npm](https://img.shields.io/npm/dm/detective-amd)](https://www.npmjs.com/package/detective-amd)
 
 Returns a list of dependencies for a given JavaScript file or AST using any of the AMD module syntaxes.
 
