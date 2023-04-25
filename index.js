@@ -12,14 +12,13 @@ const getModuleType = require('get-amd-module-type');
  * @return {String[]} List of partials/dependencies referenced in the given file
  */
 module.exports = function(src, options = {}) {
-  let dependencies = [];
-
-  if (typeof src === 'undefined') throw new Error('src not given');
-  if (src === '') return dependencies;
+  if (src === undefined) throw new Error('src not given');
+  if (src === '') return [];
 
   const walker = new Walker();
+  let dependencies = [];
 
-  walker.walk(src, (node) => {
+  walker.walk(src, node => {
     if (!types.isTopLevelRequire(node) && !types.isDefineAMD(node) && !types.isRequire(node)) {
       return;
     }
@@ -33,7 +32,7 @@ module.exports = function(src, options = {}) {
     const deps = getDependencies(node, type, options);
 
     if (deps.length > 0) {
-      dependencies = dependencies.concat(deps);
+      dependencies = [...dependencies, ...deps];
     }
   });
 
@@ -52,17 +51,23 @@ function getDependencies(node, type, options) {
   switch (type) {
     case 'named': {
       const args = node.arguments || [];
-      return getElementValues(args[1]).concat(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node));
+      return [...getElementValues(args[1]), ...(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node))];
     }
+
     case 'deps':
     case 'driver': {
       const args = node.arguments || [];
-      return getElementValues(args[0]).concat(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node));
+      return [...getElementValues(args[0]), ...(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node))];
     }
+
     case 'factory':
-    case 'rem':
+    case 'rem': {
       // REM inner requires aren't really "lazy loaded," but the form is the same
       return getLazyLoadedDeps(node);
+    }
+
+    default:
+      // nothing
   }
 
   return [];
@@ -79,7 +84,7 @@ function getLazyLoadedDeps(node) {
   const walker = new Walker();
   let dependencies = [];
 
-  walker.traverse(node, (innerNode) => {
+  walker.traverse(node, innerNode => {
     if (types.isRequire(innerNode)) {
       const requireArgs = innerNode.arguments;
 
@@ -89,7 +94,7 @@ function getLazyLoadedDeps(node) {
       const deps = requireArgs[0];
 
       if (deps.type === 'ArrayExpression') {
-        dependencies = dependencies.concat(getElementValues(deps));
+        dependencies = [...dependencies, ...getElementValues(deps)];
       } else {
         dependencies.push(getEvaluatedValue(deps));
       }
@@ -106,7 +111,7 @@ function getLazyLoadedDeps(node) {
 function getElementValues(nodeArguments) {
   const elements = nodeArguments.elements || [];
 
-  return elements.map((el) => getEvaluatedValue(el)).filter(Boolean);
+  return elements.map(element => getEvaluatedValue(element)).filter(Boolean);
 }
 
 /**
