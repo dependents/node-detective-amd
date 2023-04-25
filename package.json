@@ -49,7 +49,7 @@
   "devDependencies": {
     "c8": "^7.13.0",
     "mocha": "^9.2.2",
-    "xo": "^0.52.4"
+    "xo": "^0.54.1"
   },
   "xo": {
     "space": true,
