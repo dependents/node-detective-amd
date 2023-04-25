@@ -1,6 +1,6 @@
 {
   "name": "detective-amd",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "description": "Find all dependencies within a JavaScript file using AMD module syntax",
   "main": "index.js",
   "bin": {
@@ -51,7 +51,7 @@
     "mocha": "^9.2.2",
     "xo": "^0.52.4"
   },
-"xo": {
+  "xo": {
     "space": true,
     "ignores": [
       "test/fixtures/*"
