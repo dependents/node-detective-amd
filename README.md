@@ -1,4 +1,8 @@
-### detective-amd [![CI](https://img.shields.io/github/actions/workflow/status/dependents/node-detective-amd/ci.yml?branch=main&label=CI&logo=github)](https://github.com/dependents/node-detective-amd/actions/workflows/ci.yml?query=branch%3Amain) [![npm](https://img.shields.io/npm/v/detective-amd)](https://www.npmjs.com/package/detective-amd) [![npm](https://img.shields.io/npm/dm/detective-amd)](https://www.npmjs.com/package/detective-amd)
+# detective-amd
+
+[![CI](https://img.shields.io/github/actions/workflow/status/dependents/node-detective-amd/ci.yml?branch=main&label=CI&logo=github)](https://github.com/dependents/node-detective-amd/actions/workflows/ci.yml?query=branch%3Amain)
+[![npm version](https://img.shields.io/npm/v/detective-amd)](https://www.npmjs.com/package/detective-amd)
+[![npm downloads](https://img.shields.io/npm/dm/detective-amd)](https://www.npmjs.com/package/detective-amd)
 
 Returns a list of dependencies for a given JavaScript file or AST using any of the AMD module syntaxes.
 
@@ -10,7 +14,7 @@ npm install detective-amd
 
 * Supports JSX code via [node-source-walk](https://github.com/dependents/node-source-walk).
 
-### Usage
+## Usage
 
 Let's say we have the following file definitions:
 
@@ -50,7 +54,7 @@ You may also (optionally) configure the detective via a second object argument `
 * `skipLazyLoaded`: (Boolean) whether or not to omit inner requires in the list of extracted dependencies.
  - Note: this does not affect the REM form since those inner requires are not "lazily" fetched.
 
-### Syntax Support
+## Syntax Support
 
 **Supports the 4 forms of AMD module syntax:**
 
@@ -103,3 +107,7 @@ The dependency list will be: `[ '\'./\' + str', './c' ]`
 
 * Even though that string representation isn't incredibly useful, it's
 still added to the list to represent/count that dependency
+
+## License
+
+[MIT](LICENSE)
