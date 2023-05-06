@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports.amdAST = {
+module.exports.ast = {
   type: 'Program',
   body: [{
     type: 'ExpressionStatement',
