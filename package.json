@@ -67,10 +67,6 @@
         "error",
         "multi-line"
       ],
-      "max-nested-callbacks": [
-        "error",
-        5
-      ],
       "operator-linebreak": [
         "error",
         "after"
@@ -89,14 +85,6 @@
       "unicorn/prefer-node-protocol": "off",
       "unicorn/prefer-top-level-await": "off",
       "unicorn/prevent-abbreviations": "off"
-    },
-    "overrides": [
-      {
-        "files": "test/**",
-        "envs": [
-          "mocha"
-        ]
-      }
-    ]
+    }
   }
 }
