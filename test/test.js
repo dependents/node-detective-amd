@@ -1,10 +1,12 @@
+/* eslint-env mocha */
+
 'use strict';
 
 const assert = require('assert').strict;
-const { readFile } = require('fs').promises;
+const { readFile } = require('fs/promises');
 const path = require('path');
 const detective = require('../index.js');
-const { amdAST } = require('./fixtures/ast.js');
+const { ast } = require('./fixtures/ast.js');
 
 async function getDepsOf(filepath, options) {
   const src = await readFile(path.resolve(__dirname, filepath), 'utf8');
@@ -13,7 +15,7 @@ async function getDepsOf(filepath, options) {
 
 describe('detective-amd', () => {
   it('accepts an AST', () => {
-    const deps = detective(amdAST);
+    const deps = detective(ast);
     assert.equal(deps.length, 0);
   });
 
