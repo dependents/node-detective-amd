@@ -1,7 +1,7 @@
 # detective-amd
 
 [![CI](https://img.shields.io/github/actions/workflow/status/dependents/node-detective-amd/ci.yml?branch=main&label=CI&logo=github)](https://github.com/dependents/node-detective-amd/actions/workflows/ci.yml?query=branch%3Amain)
-[![npm version](https://img.shields.io/npm/v/detective-amd)](https://www.npmjs.com/package/detective-amd)
+[![npm version](https://img.shields.io/npm/v/detective-amd?logo=npm&logoColor=fff)](https://www.npmjs.com/package/detective-amd)
 [![npm downloads](https://img.shields.io/npm/dm/detective-amd)](https://www.npmjs.com/package/detective-amd)
 
 Returns a list of dependencies for a given JavaScript file or AST using any of the AMD module syntaxes.
@@ -52,7 +52,7 @@ console.log(detective(srca)); // prints ['./b', './c']
 You may also (optionally) configure the detective via a second object argument `detective(src, options)` that supports the following options:
 
 * `skipLazyLoaded`: (Boolean) whether or not to omit inner requires in the list of extracted dependencies.
- - Note: this does not affect the REM form since those inner requires are not "lazily" fetched.
+  * Note: this does not affect the REM form since those inner requires are not "lazily" fetched.
 
 ## Syntax Support
 
