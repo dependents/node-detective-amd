@@ -39,7 +39,7 @@ describe('detective-amd', () => {
   it('throws if the source content is not given', () => {
     assert.throws(() => {
       detective();
-    });
+    }, /^Error: src not given$/);
   });
 
   it('returns the dependencies of the factory form', async() => {
