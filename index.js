@@ -29,11 +29,7 @@ module.exports = function(src, options = {}) {
       return;
     }
 
-    const deps = getDependencies(node, type, options);
-
-    if (deps.length > 0) {
-      dependencies = [...dependencies, ...deps];
-    }
+    dependencies = [...dependencies, ...getDependencies(node, type, options)];
   });
 
   // Avoid duplicates
@@ -51,18 +47,24 @@ function getDependencies(node, type, options) {
   switch (type) {
     case 'named': {
       const args = node.arguments || [];
-      return [...getElementValues(args[1]), ...(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node))];
+      return [
+        ...getElementValues(args[1]),
+        ...(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node))
+      ];
     }
 
     case 'deps':
     case 'driver': {
       const args = node.arguments || [];
-      return [...getElementValues(args[0]), ...(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node))];
+      return [
+        ...getElementValues(args[0]),
+        ...(options.skipLazyLoaded ? [] : getLazyLoadedDeps(node))
+      ];
     }
 
     case 'factory':
     case 'rem': {
-      // REM inner requires aren't really "lazy loaded," but the form is the same
+      // REM inner requires aren't really "lazy loaded", but the form is the same
       return getLazyLoadedDeps(node);
     }
 
@@ -93,11 +95,9 @@ function getLazyLoadedDeps(node) {
       // Either require('x') or require(['x'])
       const deps = requireArgs[0];
 
-      if (deps.type === 'ArrayExpression') {
-        dependencies = [...dependencies, ...getElementValues(deps)];
-      } else {
-        dependencies.push(getEvaluatedValue(deps));
-      }
+      dependencies = deps.type === 'ArrayExpression' ?
+        [...dependencies, ...getElementValues(deps)] :
+        [...dependencies, getEvaluatedValue(deps)];
     }
   });
 
@@ -119,7 +119,7 @@ function getElementValues(nodeArguments) {
  * @returns {String} the statement represented by AST node
  */
 function getEvaluatedValue(node) {
-  if (node.type === 'Literal' || node.type === 'StringLiteral') return node.value;
+  if (['Literal', 'StringLiteral'].includes(node.type)) return node.value;
   if (node.type === 'CallExpression') return '';
 
   return escodegen.generate(node);
