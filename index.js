@@ -37,7 +37,7 @@ module.exports = function(src, options = {}) {
   });
 
   // Avoid duplicates
-  return dependencies.filter((dep, idx) => dependencies.indexOf(dep) === idx);
+  return [...new Set(dependencies)];
 };
 
 /**
