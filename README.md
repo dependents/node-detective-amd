@@ -43,10 +43,10 @@ Here's how you can grab the list of dependencies of `a.js` **synchronously**.
 const fs = require('fs');
 const detective = require('detective-amd');
 
-const srca = fs.readFileSync('a.js', 'utf8');
+const srcA = fs.readFileSync('a.js', 'utf8');
 
 // Pass in the source code or an AST (if you've already parsed the file)
-console.log(detective(srca)); // prints ['./b', './c']
+console.log(detective(srcA)); // prints ['./b', './c']
 ```
 
 You may also (optionally) configure the detective via a second object argument `detective(src, options)` that supports the following options:
@@ -84,8 +84,7 @@ require([
 
 **Expression-based requires**
 
-If there's a require call that doesn't have a string literal but an expression,
-a string (escodegen-generated) representation will be returned.
+If there's a require call that doesn't have a string literal but an expression, a string (escodegen-generated) representation will be returned.
 
 For example, if `a.js` was of the "factory" form and contained a dynamic module name:
 
@@ -105,8 +104,7 @@ define(function (require) {
 
 The dependency list will be: `[ '\'./\' + str', './c' ]`
 
-* Even though that string representation isn't incredibly useful, it's
-still added to the list to represent/count that dependency
+* Even though that string representation isn't incredibly useful, it's still added to the list to represent/count that dependency
 
 ## License
 
