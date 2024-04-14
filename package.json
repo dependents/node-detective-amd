@@ -38,18 +38,18 @@
   },
   "homepage": "https://github.com/dependents/node-detective-amd",
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "dependencies": {
-    "ast-module-types": "^5.0.0",
-    "escodegen": "^2.0.0",
+    "ast-module-types": "^6.0.0",
+    "escodegen": "^2.1.0",
     "get-amd-module-type": "^5.0.1",
-    "node-source-walk": "^6.0.1"
+    "node-source-walk": "^7.0.0"
   },
   "devDependencies": {
-    "c8": "^7.13.0",
-    "mocha": "^10.2.0",
-    "xo": "^0.54.2"
+    "c8": "^9.1.0",
+    "mocha": "^10.4.0",
+    "xo": "^0.58.0"
   },
   "xo": {
     "space": true,
