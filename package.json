@@ -41,15 +41,15 @@
     "node": ">=18"
   },
   "dependencies": {
-    "ast-module-types": "^6.0.0",
+    "ast-module-types": "^6.0.1",
     "escodegen": "^2.1.0",
-    "get-amd-module-type": "^6.0.0",
-    "node-source-walk": "^7.0.0"
+    "get-amd-module-type": "^6.0.1",
+    "node-source-walk": "^7.0.1"
   },
   "devDependencies": {
-    "c8": "^9.1.0",
-    "mocha": "^10.4.0",
-    "xo": "^0.58.0"
+    "c8": "^10.1.3",
+    "mocha": "^11.1.0",
+    "xo": "^0.60.0"
   },
   "xo": {
     "space": true,
@@ -81,6 +81,7 @@
         "never"
       ],
       "unicorn/explicit-length-check": "off",
+      "unicorn/no-anonymous-default-export": "off",
       "unicorn/prefer-module": "off",
       "unicorn/prefer-node-protocol": "off",
       "unicorn/prefer-top-level-await": "off",
