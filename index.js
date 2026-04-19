@@ -8,7 +8,7 @@ const getModuleType = require('get-amd-module-type');
 /**
  * @param  {String} src - the string content or AST of an AMD module
  * @param  {Object} [options]
- * @param  {Object} [options.skipLazyLoaded] - whether or not to omit inner (non-REM) required dependencies
+ * @param  {Boolean} [options.skipLazyLoaded] - whether or not to omit inner (non-REM) required dependencies
  * @return {String[]} List of partials/dependencies referenced in the given file
  */
 module.exports = function(src, options = {}) {
