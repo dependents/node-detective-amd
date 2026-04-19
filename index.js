@@ -16,7 +16,7 @@ module.exports = function(src, options = {}) {
   if (src === '') return [];
 
   const walker = new Walker();
-  let dependencies = [];
+  const dependencies = [];
 
   walker.walk(src, node => {
     if (!types.isTopLevelRequire(node) && !types.isDefineAMD(node) && !types.isRequire(node)) {
@@ -29,7 +29,7 @@ module.exports = function(src, options = {}) {
       return;
     }
 
-    dependencies = [...dependencies, ...getDependencies(node, type, options)];
+    dependencies.push(...getDependencies(node, type, options));
   });
 
   // Avoid duplicates
@@ -84,7 +84,7 @@ function getDependencies(node, type, options) {
 function getLazyLoadedDeps(node) {
   // Use logic from node-detective to find require calls
   const walker = new Walker();
-  let dependencies = [];
+  const dependencies = [];
 
   walker.traverse(node, innerNode => {
     if (types.isRequire(innerNode)) {
@@ -95,9 +95,11 @@ function getLazyLoadedDeps(node) {
       // Either require('x') or require(['x'])
       const deps = requireArgs[0];
 
-      dependencies = deps.type === 'ArrayExpression' ?
-        [...dependencies, ...getElementValues(deps)] :
-        [...dependencies, getEvaluatedValue(deps)];
+      if (deps.type === 'ArrayExpression') {
+        dependencies.push(...getElementValues(deps));
+      } else {
+        dependencies.push(getEvaluatedValue(deps));
+      }
     }
   });
 
