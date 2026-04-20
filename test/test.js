@@ -105,6 +105,12 @@ test('skips dynamic computed dependencies', async() => {
   assert.equal(deps[0], './a');
 });
 
+test('skips scalar computed require (does not emit empty string)', async() => {
+  const deps = await getDepsOf('./fixtures/amd/dynamicScalarComputedRequire.js');
+  assert.equal(deps.length, 1);
+  assert.equal(deps[0], './a');
+});
+
 test('does not mistakenly try to parse generic defines as amd', async() => {
   const deps = await getDepsOf('./fixtures/notAmd.js');
   assert.equal(deps.length, 0);

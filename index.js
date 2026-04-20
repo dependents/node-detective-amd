@@ -101,7 +101,8 @@ function getLazyLoadedDeps(node) {
       if (deps.type === 'ArrayExpression') {
         dependencies.push(...getElementValues(deps));
       } else {
-        dependencies.push(getEvaluatedValue(deps));
+        const value = getEvaluatedValue(deps);
+        if (value) dependencies.push(value);
       }
     }
   });
