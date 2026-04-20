@@ -125,7 +125,7 @@ function getElementValues(nodeArguments) {
  * @returns {String} the statement represented by AST node
  */
 function getEvaluatedValue(node) {
-  if (['Literal', 'StringLiteral'].includes(node.type)) return node.value;
+  if (node.type === 'Literal' || node.type === 'StringLiteral') return node.value;
   if (node.type === 'CallExpression') return '';
 
   return escodegen.generate(node);
