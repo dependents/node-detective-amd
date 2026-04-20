@@ -19,13 +19,16 @@ module.exports = function(src, options = {}) {
   const dependencies = [];
 
   walker.walk(src, node => {
-    if (!types.isTopLevelRequire(node) && !types.isDefineAMD(node) && !types.isRequire(node)) {
+    const isTopLevel = types.isTopLevelRequire(node);
+    const isRequire = types.isRequire(node);
+
+    if (!isTopLevel && !types.isDefineAMD(node) && !isRequire) {
       return;
     }
 
     const type = getModuleType.fromAST(node);
 
-    if (!types.isTopLevelRequire(node) && types.isRequire(node) && type !== 'rem' && options.skipLazyLoaded) {
+    if (!isTopLevel && isRequire && type !== 'rem' && options.skipLazyLoaded) {
       return;
     }
 
