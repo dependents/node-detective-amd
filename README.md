@@ -51,7 +51,7 @@ console.log(detective(srcA)); // prints ['./b', './c']
 
 You may also (optionally) configure the detective via a second object argument `detective(src, options)` that supports the following options:
 
-* `skipLazyLoaded`: (Boolean) whether or not to omit inner requires in the list of extracted dependencies.
+* `skipLazyLoaded`: (boolean) whether or not to omit inner requires in the list of extracted dependencies.
   * Note: this does not affect the REM form since those inner requires are not "lazily" fetched.
 
 ## Syntax Support
@@ -84,9 +84,9 @@ require([
 
 **Expression-based requires**
 
-If there's a require call that doesn't have a string literal but an expression, a string (escodegen-generated) representation will be returned.
+If there's a `require` call with a non-literal, non-call-expression argument, an escodegen-generated string representation is included in the dependency list.
 
-For example, if `a.js` was of the "factory" form and contained a dynamic module name:
+For example, if `a.js` was of the "factory" form and contained a dynamic module name using a binary expression:
 
 ```js
 // a.js
@@ -104,7 +104,7 @@ define(function (require) {
 
 The dependency list will be: `[ '\'./\' + str', './c' ]`
 
-* Even though that string representation isn't incredibly useful, it's still added to the list to represent/count that dependency
+* Note: if the argument is a function call (e.g. `require(getModule())`), it cannot be statically determined and is omitted from the list.
 
 ## License
 
