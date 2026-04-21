@@ -6,10 +6,9 @@ const escodegen = require('escodegen');
 const getModuleType = require('get-amd-module-type');
 
 /**
- * @param  {String} src - the string content or AST of an AMD module
- * @param  {Object} [options]
- * @param  {Boolean} [options.skipLazyLoaded] - whether or not to omit inner (non-REM) required dependencies
- * @return {String[]} List of partials/dependencies referenced in the given file
+ * @param  {string|Object} src - the string content or pre-parsed AST of an AMD module
+ * @param  {boolean} [options.skipLazyLoaded] - whether or not to omit inner (non-REM) required dependencies
+ * @returns {string[]} list of dependencies referenced in the given file
  */
 module.exports = function(src, options = {}) {
   if (src === undefined) throw new Error('src not given');
@@ -41,9 +40,9 @@ module.exports = function(src, options = {}) {
 
 /**
  * @param   {Object} node - AST node
- * @param   {String} type - sniffed type of the module
+ * @param   {string} type - sniffed AMD module type
  * @param   {Object} options - detective configuration
- * @returns {String[]} A list of file dependencies or an empty list if the type is unsupported
+ * @returns {string[]} list of dependencies, or an empty array if the type is unsupported
  */
 function getDependencies(node, type, options) {
   // Note: No need to handle nodeps since there won't be any dependencies
@@ -79,10 +78,11 @@ function getDependencies(node, type, options) {
 }
 
 /**
- * Looks for dynamic module loading
+ * Collects require() calls within an already-matched AMD node (factory, REM,
+ * or dynamic require). Handles both require('x') and require(['x']) forms.
  *
- * @param  {AST} node
- * @return {String[]} List of dynamically required dependencies
+ * @param  {Object} node - AST node to traverse
+ * @returns {string[]} list of statically-determinable required dependencies
  */
 function getLazyLoadedDeps(node) {
   // Use logic from node-detective to find require calls
@@ -111,8 +111,8 @@ function getLazyLoadedDeps(node) {
 }
 
 /**
- * @param {Object} nodeArguments
- * @returns {String[]} the literal values from the passed array
+ * @param {Object} nodeArguments - an ArrayExpression node
+ * @returns {string[]} the statically-determinable string values of the array elements
  */
 function getElementValues(nodeArguments) {
   const elements = nodeArguments.elements || [];
@@ -121,8 +121,8 @@ function getElementValues(nodeArguments) {
 }
 
 /**
- * @param {AST} node
- * @returns {String} the statement represented by AST node
+ * @param {Object} node - AST node
+ * @returns {string} the string value of the node, or '' if it cannot be statically determined
  */
 function getEvaluatedValue(node) {
   if (node.type === 'Literal' || node.type === 'StringLiteral') return node.value;
