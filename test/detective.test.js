@@ -135,4 +135,22 @@ test('when given option to omit lazy loaded requires, still returns the inner de
   assert.equal(deps[1], 'b');
 });
 
+test('when given option to omit lazy loaded requires, still returns static deps of the named form', async() => {
+  const deps = await getDepsOf('./fixtures/amd/named.js', { skipLazyLoaded: true });
+  assert.equal(deps.length, 1);
+  assert.equal(deps[0], 'a');
+});
+
+test('handles dynamic require whose argument is an identifier (non-literal, non-call-expression)', () => {
+  const deps = detective('define(function(require) { require(someIdentifier); });');
+  assert.equal(deps.length, 1);
+  assert.equal(deps[0], 'someIdentifier');
+});
+
+test('does not throw when a require call inside AMD has no arguments', () => {
+  assert.doesNotThrow(() => {
+    detective('define(function(require) { require(); });');
+  });
+});
+
 test.run();
