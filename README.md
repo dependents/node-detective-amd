@@ -39,14 +39,22 @@ define(function () {
 
 Here's how you can grab the list of dependencies of `a.js` **synchronously**.
 
+### ESM
+
 ```js
-const fs = require('fs');
-const detective = require('detective-amd');
+import fs from 'node:fs';
+import detective from 'detective-amd';
 
 const srcA = fs.readFileSync('a.js', 'utf8');
 
 // Pass in the source code or an AST (if you've already parsed the file)
 console.log(detective(srcA)); // prints ['./b', './c']
+```
+
+### CommonJS
+
+```js
+const { default: detective } = require('detective-amd');
 ```
 
 You may also (optionally) configure the detective via a second object argument `detective(src, options)` that supports the following options:

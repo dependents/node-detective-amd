@@ -2,7 +2,10 @@
   "name": "detective-amd",
   "version": "6.1.0",
   "description": "Find all dependencies within a JavaScript file using AMD module syntax",
-  "main": "index.js",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
   "bin": {
     "detective-amd": "bin/cli.js"
   },
@@ -38,7 +41,7 @@
   },
   "homepage": "https://github.com/dependents/node-detective-amd",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19.0 || >=22.12.0"
   },
   "dependencies": {
     "ast-module-types": "^6.0.1",
