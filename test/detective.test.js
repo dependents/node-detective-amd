@@ -1,8 +1,8 @@
 'use strict';
 
-const assert = require('assert').strict;
-const { readFile } = require('fs/promises');
-const path = require('path');
+const assert = require('node:assert').strict;
+const { readFile } = require('node:fs/promises');
+const path = require('node:path');
 const { suite } = require('uvu');
 const detective = require('../index.js');
 const { ast } = require('./fixtures/ast.js');

@@ -2,8 +2,8 @@
 
 'use strict';
 
-const fs = require('fs');
-const process = require('process');
+const fs = require('node:fs');
+const process = require('node:process');
 const getDependencies = require('../index.js');
 
 const filename = process.argv[2];
