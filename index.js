@@ -1,5 +1,5 @@
 import Walker from 'node-source-walk';
-import types from 'ast-module-types';
+import { isTopLevelRequire, isRequire, isDefineAMD } from 'ast-module-types';
 import escodegen from 'escodegen';
 import getModuleType from 'get-amd-module-type';
 
@@ -16,16 +16,16 @@ export default function detective(src, options = {}) {
   const dependencies = [];
 
   walker.walk(src, node => {
-    const isTopLevel = types.isTopLevelRequire(node);
-    const isRequire = types.isRequire(node);
+    const isTopLevel = isTopLevelRequire(node);
+    const nodeIsRequire = isRequire(node);
 
-    if (!isTopLevel && !types.isDefineAMD(node) && !isRequire) {
+    if (!isTopLevel && !isDefineAMD(node) && !nodeIsRequire) {
       return;
     }
 
     const type = getModuleType.fromAST(node);
 
-    if (!isTopLevel && isRequire && type !== 'rem' && options.skipLazyLoaded) {
+    if (!isTopLevel && nodeIsRequire && type !== 'rem' && options.skipLazyLoaded) {
       return;
     }
 
@@ -88,7 +88,7 @@ function getLazyLoadedDeps(node) {
   const dependencies = [];
 
   walker.traverse(node, innerNode => {
-    if (!types.isRequire(innerNode)) return;
+    if (!isRequire(innerNode)) return;
 
     const requireArgs = innerNode.arguments;
 
