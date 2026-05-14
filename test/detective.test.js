@@ -19,19 +19,19 @@ test('accepts an AST', () => {
   assert.equal(deps.length, 0);
 });
 
-test('supports es6', () => {
+test('supports ES6', () => {
   assert.doesNotThrow(() => {
     detective('define({ foo() {}});');
   });
 });
 
-test('supports jsx', () => {
+test('supports JSX', () => {
   assert.doesNotThrow(() => {
     detective('define({ foo: function(){ return <jsx />; } });');
   });
 });
 
-test('returns an empty list on an empty file', () => {
+test('returns an empty list for an empty file', () => {
   const results = detective('');
   assert.equal(results.length, 0);
 });
@@ -74,7 +74,7 @@ test('returns the dependencies for the REM form (#2)', async() => {
   assert.equal(deps[1], 'b');
 });
 
-test('returns the emtpy list for non-amd modules', async() => {
+test('returns an empty list for non-AMD modules', async() => {
   const deps = await getDepsOf('./fixtures/amd/empty.js');
   assert.equal(deps.length, 0);
 });
@@ -111,7 +111,7 @@ test('skips scalar computed require (does not emit empty string)', async() => {
   assert.equal(deps[0], './a');
 });
 
-test('does not mistakenly try to parse generic defines as amd', async() => {
+test('does not mistakenly try to parse generic defines as AMD', async() => {
   const deps = await getDepsOf('./fixtures/notAmd.js');
   assert.equal(deps.length, 0);
 });
