@@ -90,20 +90,20 @@ function getLazyLoadedDeps(node) {
   const dependencies = [];
 
   walker.traverse(node, innerNode => {
-    if (types.isRequire(innerNode)) {
-      const requireArgs = innerNode.arguments;
+    if (!types.isRequire(innerNode)) return;
 
-      if (requireArgs.length === 0) return;
+    const requireArgs = innerNode.arguments;
 
-      // Either require('x') or require(['x'])
-      const deps = requireArgs[0];
+    if (requireArgs.length === 0) return;
 
-      if (deps.type === 'ArrayExpression') {
-        dependencies.push(...getElementValues(deps));
-      } else {
-        const value = getEvaluatedValue(deps);
-        if (value) dependencies.push(value);
-      }
+    // Either require('x') or require(['x'])
+    const deps = requireArgs[0];
+
+    if (deps.type === 'ArrayExpression') {
+      dependencies.push(...getElementValues(deps));
+    } else {
+      const value = getEvaluatedValue(deps);
+      if (value) dependencies.push(value);
     }
   });
 
