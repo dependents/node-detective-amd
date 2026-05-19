@@ -1,16 +1,14 @@
-'use strict';
-
-const Walker = require('node-source-walk');
-const types = require('ast-module-types');
-const escodegen = require('escodegen');
-const getModuleType = require('get-amd-module-type');
+import Walker from 'node-source-walk';
+import { isTopLevelRequire, isRequire, isDefineAMD } from 'ast-module-types';
+import escodegen from 'escodegen';
+import getModuleType from 'get-amd-module-type';
 
 /**
  * @param  {string|Object} src - the string content or pre-parsed AST of an AMD module
  * @param  {boolean} [options.skipLazyLoaded] - whether or not to omit inner (non-REM) required dependencies
  * @returns {string[]} list of dependencies referenced in the given file
  */
-module.exports = function(src, options = {}) {
+export default function detective(src, options = {}) {
   if (src === undefined) throw new Error('src not given');
   if (src === '') return [];
 
@@ -18,16 +16,16 @@ module.exports = function(src, options = {}) {
   const dependencies = [];
 
   walker.walk(src, node => {
-    const isTopLevel = types.isTopLevelRequire(node);
-    const isRequire = types.isRequire(node);
+    const isTopLevel = isTopLevelRequire(node);
+    const nodeIsRequire = isRequire(node);
 
-    if (!isTopLevel && !types.isDefineAMD(node) && !isRequire) {
+    if (!isTopLevel && !isDefineAMD(node) && !nodeIsRequire) {
       return;
     }
 
     const type = getModuleType.fromAST(node);
 
-    if (!isTopLevel && isRequire && type !== 'rem' && options.skipLazyLoaded) {
+    if (!isTopLevel && nodeIsRequire && type !== 'rem' && options.skipLazyLoaded) {
       return;
     }
 
@@ -36,7 +34,7 @@ module.exports = function(src, options = {}) {
 
   // Avoid duplicates
   return [...new Set(dependencies)];
-};
+}
 
 /**
  * @param   {Object} node - AST node
@@ -90,7 +88,7 @@ function getLazyLoadedDeps(node) {
   const dependencies = [];
 
   walker.traverse(node, innerNode => {
-    if (!types.isRequire(innerNode)) return;
+    if (!isRequire(innerNode)) return;
 
     const requireArgs = innerNode.arguments;
 

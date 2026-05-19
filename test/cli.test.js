@@ -1,10 +1,11 @@
-'use strict';
+import { strict as assert } from 'node:assert';
+import process from 'node:process';
+import { spawnSync } from 'node:child_process';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { suite } from 'uvu';
 
-const assert = require('assert').strict;
-const process = require('process');
-const { spawnSync } = require('child_process');
-const path = require('path');
-const { suite } = require('uvu');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const cliPath = path.resolve(__dirname, '..', 'bin', 'cli.js');
 const test = suite('detective-amd CLI');

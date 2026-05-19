@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-'use strict';
-
-const fs = require('fs');
-const process = require('process');
-const getDependencies = require('../index.js');
+import fs from 'node:fs';
+import process from 'node:process';
+import detective from '../index.js';
 
 const filename = process.argv[2];
 
@@ -14,7 +12,7 @@ if (!filename) {
   process.exit(1);
 }
 
-const dependencies = getDependencies(fs.readFileSync(filename, 'utf8'));
+const dependencies = detective(fs.readFileSync(filename, 'utf8'));
 for (const dependency of dependencies) {
   console.log(dependency);
 }

@@ -1,6 +1,4 @@
-'use strict';
-
-module.exports.ast = {
+export const ast = {
   type: 'Program',
   body: [{
     type: 'ExpressionStatement',

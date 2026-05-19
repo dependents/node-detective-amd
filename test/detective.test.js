@@ -1,11 +1,12 @@
-'use strict';
+import { strict as assert } from 'node:assert';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { suite } from 'uvu';
+import detective from '../index.js';
+import { ast } from './fixtures/ast.js';
 
-const assert = require('assert').strict;
-const { readFile } = require('fs/promises');
-const path = require('path');
-const { suite } = require('uvu');
-const detective = require('../index.js');
-const { ast } = require('./fixtures/ast.js');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function getDepsOf(filepath, options) {
   const src = await readFile(path.resolve(__dirname, filepath), 'utf8');
