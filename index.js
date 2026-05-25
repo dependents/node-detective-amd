@@ -91,7 +91,6 @@ function getLazyLoadedDeps(node) {
     if (!isRequire(innerNode)) return;
 
     const requireArgs = innerNode.arguments;
-
     if (requireArgs.length === 0) return;
 
     // Either require('x') or require(['x'])
@@ -101,7 +100,9 @@ function getLazyLoadedDeps(node) {
       dependencies.push(...getElementValues(deps));
     } else {
       const value = getEvaluatedValue(deps);
-      if (value) dependencies.push(value);
+      if (value) {
+        dependencies.push(value);
+      }
     }
   });
 
